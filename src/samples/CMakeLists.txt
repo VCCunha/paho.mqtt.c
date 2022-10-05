@@ -40,10 +40,17 @@ SET_TARGET_PROPERTIES(
      paho_c_pub paho_c_sub paho_cs_pub paho_cs_sub PROPERTIES
      COMPILE_DEFINITIONS "PAHO_MQTT_IMPORTS=1")
 
-TARGET_LINK_LIBRARIES(paho_c_pub paho-mqtt3as)
-TARGET_LINK_LIBRARIES(paho_c_sub paho-mqtt3as)
-TARGET_LINK_LIBRARIES(paho_cs_pub paho-mqtt3cs)
-TARGET_LINK_LIBRARIES(paho_cs_sub paho-mqtt3cs)
+IF (PAHO_WITH_SSL)
+	TARGET_LINK_LIBRARIES(paho_c_pub paho-mqtt3as)
+	TARGET_LINK_LIBRARIES(paho_c_sub paho-mqtt3as)
+	TARGET_LINK_LIBRARIES(paho_cs_pub paho-mqtt3cs)
+	TARGET_LINK_LIBRARIES(paho_cs_sub paho-mqtt3cs)
+ELSE ()
+	TARGET_LINK_LIBRARIES(paho_c_pub paho-mqtt3a)
+	TARGET_LINK_LIBRARIES(paho_c_sub paho-mqtt3a)
+	TARGET_LINK_LIBRARIES(paho_cs_pub paho-mqtt3c)
+	TARGET_LINK_LIBRARIES(paho_cs_sub paho-mqtt3c)
+ENDIF ()
 
 ADD_EXECUTABLE(MQTTAsync_subscribe MQTTAsync_subscribe.c)
 ADD_EXECUTABLE(MQTTAsync_publish MQTTAsync_publish.c)
@@ -84,10 +91,17 @@ ADD_EXECUTABLE(paho_c_sub_static paho_c_sub.c pubsub_opts.c)
 ADD_EXECUTABLE(paho_cs_pub_static paho_cs_pub.c pubsub_opts.c)
 ADD_EXECUTABLE(paho_cs_sub_static paho_cs_sub.c pubsub_opts.c)
 
-TARGET_LINK_LIBRARIES(paho_c_pub_static paho-mqtt3as-static)
-TARGET_LINK_LIBRARIES(paho_c_sub_static paho-mqtt3as-static)
-TARGET_LINK_LIBRARIES(paho_cs_pub_static paho-mqtt3cs-static)
-TARGET_LINK_LIBRARIES(paho_cs_sub_static paho-mqtt3cs-static)
+IF (PAHO_WITH_SSL)
+	TARGET_LINK_LIBRARIES(paho_c_pub_static paho-mqtt3as-static)
+	TARGET_LINK_LIBRARIES(paho_c_sub_static paho-mqtt3as-static)
+	TARGET_LINK_LIBRARIES(paho_cs_pub_static paho-mqtt3cs-static)
+	TARGET_LINK_LIBRARIES(paho_cs_sub_static paho-mqtt3cs-static)
+ELSE ()
+	TARGET_LINK_LIBRARIES(paho_c_pub_static paho-mqtt3a-static)
+	TARGET_LINK_LIBRARIES(paho_c_sub_static paho-mqtt3a-static)
+	TARGET_LINK_LIBRARIES(paho_cs_pub_static paho-mqtt3c-static)
+	TARGET_LINK_LIBRARIES(paho_cs_sub_static paho-mqtt3c-static)
+ENDIF ()
 
 INSTALL(TARGETS paho_c_sub_static
                 paho_c_pub_static
